@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>index</title>
+		<meta name="description" content="">
+		<meta name="author" content="Administrator">
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="stylesheet"  href="scripts/themes/bootstrap/easyui.css" />
+		<link rel="stylesheet" type="text/css" href="scripts/themes/icon.css">
+		<script type="text/javascript" src="scripts/jquery.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="scripts/knockout/knockout-3.1.0.js"></script>
+		<script type="text/javascript" src="control/EasyUIMapping.js"></script>
+		
+		<script type="text/javascript">
+			var viewModel =function() {
+					this.value  = ko.observable("123");
+					this.name = ko.observable("123");
+					this.click = function()
+					{
+						 
+						 this.name("this.value()");
+						 //this.value("heloo");
+					};
+					this.readonly = ko.observable(false);
+				};
+				
+				var model = new viewModel();
+			$(function(){
+				ko.applyBindings(model); 
+			});
+		</script>
+	</head>
+
+	<body>
+		<input type="text" class="easyui-textbox" data-option="prompt:'Enter a email address...',multiline:true" data-bind="textbox:value,onChange:click,disabled:readonly,value:value,novalidate:true"/>	<br />
+		<span data-bind="text:name"></span><br />
+		<span data-bind="text:value"></span>
+		<br  />
+		
+		<input type="text" class="easyui-textbox" data-option="prompt:'Enter a email address...'" data-bind="textbox:value,onChange:click,readonly:readonly,value:value,novalidate:true"/>	<br />
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" data-bind="linkbutton:null,click:click">easyui</a>
