@@ -1,0 +1,2 @@
+# easyuiMapping
+easyui控件的knockout的访问包装
