@@ -39,10 +39,12 @@
 					{
 						 
 						 this.name("this.value()");
-						 this.collapse(true);
+						 //this.collapse(true);
+						 this.resize({left:0,top:0});
 						 //this.value("heloo");
 					};
 					this.collapse = ko.observable(false);
+					this.resize = ko.observable({left:400,top:600});
 					this.visible = ko.observable(false);
 					this.readonly = ko.observable(false);
 				};
@@ -60,7 +62,7 @@
 		<span data-bind="text:value"></span>
 		<br  />
 		
-		<div id="w" class="easyui-dialog" title="Basic Window" data-options="iconCls:'icon-save',collapsible:true,maximizable:true" data-bind="dialog:null,fit:collapse,buttons:[{text:name(),handler:function() { click.call($data)} }],closed:visible" style="width:500px;height:200px;padding:10px;">
+		<div id="w" class="easyui-window" title="Basic Window" data-options="iconCls:'icon-save',collapsible:true,maximizable:true" data-bind="window:null,move:resize,fit:collapse,buttons:[{text:name(),handler:function() { click.call($data)} }],closed:visible" style="width:500px;height:200px;padding:10px;">
 			<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email address...',multiline:true" data-bind="textbox:value,disabled:readonly,value:value,novalidate:true"/>	<br />
 		</div>
 

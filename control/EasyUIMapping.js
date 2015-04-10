@@ -93,7 +93,7 @@
             var allBindings = this.allBindings();
             for(property in allBindings){
                 //如果data-bind中的属性在$.fn.xxx.defaults中存在，则视为有效的属性。
-                if($.fn[this.controlType].defaults[property] != undefined){
+                if($.fn[this.controlType].defaults.hasOwnProperty(property)){
                     //如果属性是ko的可观察对象，则取出其值，赋给options
                     if( ko.isObservable(allBindings[property])){
                         this.options[property] = allBindings[property]();
@@ -131,6 +131,34 @@
         		easyuiMapping.plugins[this.controlType].update.call(this);
         	}
         };
+        
+        //如果是方法则返回
+        this.getMethods = function(){
+        	var methods = [];
+        	var self = this;
+            var allBindings = this.allBindings();
+            for(property in allBindings){
+                //如果data-bind中的属性在$.fn.xxx.defaults中存在，则视为有效的属性。
+                if($.fn[this.controlType].methods.hasOwnProperty(property)){
+                    //如果属性是ko的可观察对象，则取出其值，赋给options
+                    if( ko.isObservable(allBindings[property])){
+                    	methods.push({method:property,param:allBindings[property]()});
+                    }else
+                    {
+                    	methods.push({method:property,param:allBindings[property]});
+                    }
+                }
+            }
+            
+            return methods;
+        }
+        //执行方法
+        this.execMethods = function() {
+        	var methods = this.getMethods();
+			for(var i=0; i<methods.length; i++){
+				$(element)[this.controlType](methods[i].method,methods[i].param);
+			}
+        }
 		
 		this.init = function(){			
 			this.getOptions();
@@ -139,6 +167,8 @@
 			this.bindPluginInit();
 			
 			$(element)[this.controlType](this.options);
+			
+			this.execMethods();			
 		};
 		
 		this.update = function(){
@@ -153,6 +183,8 @@
 			this.bindPluginUpdate();
 			
 			$(element)[this.controlType](this.options);
+			
+			this.execMethods();
 		};
 	};
 	
