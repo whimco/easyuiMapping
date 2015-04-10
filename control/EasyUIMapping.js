@@ -45,7 +45,7 @@
 		this.options = {};
 		
 		this.getOptions = function(){
-            this.options = $(this.element).attr("data-option");
+            this.options = $(this.element).attr("data-options");
             if( this.options == undefined){
             	this.options = {};
             	return;
@@ -60,7 +60,7 @@
             var allBindings = this.allBindings();
             for(property in allBindings){
                 //如果data-bind中的属性在$.fn.xxx.defaults中存在，则视为有效的属性。
-                if($.fn[this.controlType].defaults[property] != undefined){
+                if($.fn[this.controlType].defaults.hasOwnProperty(property)){
                     //如果属性是ko的可观察对象，则取出其值，赋给options
                     if( ko.isObservable(allBindings[property])){
                         this.options[property] = allBindings[property]();
@@ -69,7 +69,8 @@
                     }else if( typeof( allBindings[property]) == "string"
                            || typeof( allBindings[property]) == "boolean"
                            || typeof( allBindings[property]) == "number"
-                           || typeof( allBindings[property]) == "object"){
+                           || typeof( allBindings[property]) == "object"
+                           || typeof( allBindings[property]) == "array"){
                        this.options[property] = allBindings[property];
                        
                        //如果是方法，则使用闭包切换this对象，并赋值
@@ -110,6 +111,10 @@
         			self.valueAccessor(newValue);
         			fun();
         		};
+        	}else{
+        		this.options["onChange"] = function(newValue){
+        			self.valueAccessor(newValue);
+        		};
         	}
         };
         
@@ -140,6 +145,10 @@
 			//更新可观察对象的值
 			this.activeObservable();
 			
+			//刷新控件
+			this.getOptions();
+			this.extendOptions();
+			this.bindDefaultEvents();
 			//处理绑定的扩展操作
 			this.bindPluginUpdate();
 			
