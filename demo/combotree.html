@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>combotree</title>
+		<meta name="description" content="">
+		<meta name="author" content="whimco">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+		
+		<link rel="stylesheet"  href="../scripts/themes/bootstrap/easyui.css" />
+		<link rel="stylesheet" type="text/css" href="../scripts/themes/icon.css">
+		<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+		<script type="text/javascript" src="../scripts/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../scripts/knockout/knockout-3.1.0.js"></script>
+		<script type="text/javascript" src="../komapping/easyuimapping.js"></script>
+		<script type="text/javascript">
+			var viewModel =function(){	
+					var self = this;			    
+					this.value = ko.observable("");								
+					this.onchange = function(newValue)
+					{
+						this.value(newValue);	
+						this.disabled(true);				
+					};
+					
+					this.data =  ko.observable([]);
+					
+					this.click = function()
+					{
+						this.data(
+							[{
+								id: 1,
+								text: 'Languages',
+								children: [{
+									id: 11,
+									text: 'Java'
+								},{
+									id: 12,
+									text: 'C++'
+								}]
+							}]
+						);
+					},
+					this.disabled = ko.computed(function(){
+							return this.value() == 1;
+					},this);
+					this.readonly = ko.observable(false);
+				};
+					
+			$(function(){
+				
+				ko.applyBindings(new viewModel()); 
+			});
+		</script>
+	</head>
+
+	<body>
+		<div>
+			<label>textbox1</label>
+			<select id="cc" style="width:200px;"
+				        data-bind="combotree:value,loadData:data,readonly:false,editable:true">
+				</select>
+			<br/>										           
+			<label>textbox2</label>			
+			<input type="text"  data-options="prompt:'Enter a email value...',
+																	multiline:false" 
+													 data-bind="textbox:value,
+													            value:value,
+													            novalidate:true,
+													            disabled:disabled"/>		
+		   <br />
+		   <a  data-bind="linkbutton:null,click:click">动态赋值</a>
+		</div>
+	</body>
+</html>
