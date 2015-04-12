@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-
-		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
-		Remove this if you use the .htaccess -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>combo</title>
-		<meta name="description" content="">
-		<meta name="author" content="whimco">
-		<meta name="viewport" content="width=device-width; initial-scale=1.0">
-		
 		<link rel="stylesheet"  href="../scripts/themes/bootstrap/easyui.css" />
 		<link rel="stylesheet" type="text/css" href="../scripts/themes/icon.css">
-		<script type="text/javascript" src="../scripts/jquery-1.11.2.js"></script>
+		<link rel="stylesheet" type="text/css" href="../scripts/prettify/prettify.css">
+		<script type="text/javascript" src="../scripts/prettify/prettify.js"></script>
+		<script type="text/javascript" src="../scripts/jquery.min.js"></script>
 		<script type="text/javascript" src="../scripts/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="../scripts/knockout/knockout-3.1.0.js"></script>
+		<script type="text/javascript" src="../scripts/knockout/knockout-3.3.0.js"></script>
 		<script type="text/javascript" src="../komapping/easyuimapping.js"></script>
-		<script type="text/javascript" src="../scripts/jquery.combobox.js"></script>
+		<script type="text/javascript" src="../scripts/helper.js"></script>
 		<script type="text/javascript">
 			var viewModel ={
 					value : ko.observable(""),
 					message : ko.observable(""),				
 					onchange : function(record){						
 				        this.value(record.text);				       	
+				    },
+				    onchange1:function(newValue){
+				    	this.message(newValue);
 				    },
 				    value1:	ko.observable(""),			
 					disabled : ko.observable(true),
@@ -53,8 +48,11 @@
 	       <input type="text" class="easyui-textbox" data-options="prompt:'Enter a value...',
 																	multiline:false" 
 													 data-bind="textbox:value,
-													            value:value"/>
+													            value:value,
+													            onChange:onchange1"/>
 		   <br />
+		      <br />
+		   <span data-bind="text:message"></span>
 		</div>
 	</body>
 </html>

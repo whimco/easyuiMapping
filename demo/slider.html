@@ -17,9 +17,7 @@
 					message : ko.observable(""),				
 					onchange : function(newValue)
 					{
-						this.message("onchange fired");
-						this.disabled(true);
-						this.readonly(true);
+						this.message(newValue);						
 					},
 					disabled : ko.observable(false),
 					readonly : ko.observable(false)
@@ -35,22 +33,12 @@
 
 	<body>
 		<div>
-			<label>textbox1</label>
-			<input type="text" class="easyui-textbox" data-bind="textbox:value,
-													 			prompt:'Enter a value...',
-													 			multiline:false,
-													            value:value,
-													            onChange:onchange,
-													            novalidate:true,
-													            readonly:readonly"/>
+			<br/>	<br/>	
+			<input class="easyui-slider" value="12"  style="width:300px" data-bind="slider:null,onChange:onchange"
+        				data-options="showTip:true,rule:[0,'|',25,'|',50,'|',75,'|',100]">
 			<br/>										           
-			<label>textbox2</label>			
-			<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email value...',
-																	multiline:false" 
-													 data-bind="textbox:value,
-													            value:value,
-													            novalidate:true,
-													            disabled:disabled"/>		
+			
+				
 		   <br />
 		   <span data-bind="text:message"></span>
 		</div>

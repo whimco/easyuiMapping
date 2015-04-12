@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+	<head>		
 		<link rel="stylesheet"  href="../scripts/themes/bootstrap/easyui.css" />
 		<link rel="stylesheet" type="text/css" href="../scripts/themes/icon.css">
 		<link rel="stylesheet" type="text/css" href="../scripts/prettify/prettify.css">
@@ -10,63 +10,49 @@
 		<script type="text/javascript" src="../scripts/knockout/knockout-3.3.0.js"></script>
 		<script type="text/javascript" src="../komapping/easyuimapping.js"></script>
 		<script type="text/javascript" src="../scripts/helper.js"></script>
+		
 		<script type="text/javascript">
-			var viewModel =function(){	
-					var self = this;			    
-					this.value = ko.observable("");								
-					this.onchange = function(newValue)
+			var viewModel ={
+					value : ko.observable("hello"),
+					message : ko.observable(""),				
+					onchange : function(newValue)
 					{
-						this.value(newValue);	
-						this.disabled(true);				
-					};
-					
-					this.data =  ko.observable([]);
-					
-					this.click = function()
-					{
-						this.data(
-							[{
-								id: 1,
-								text: 'Languages',
-								children: [{
-									id: 11,
-									text: 'Java'
-								},{
-									id: 12,
-									text: 'C++'
-								}]
-							}]
-						);
+						this.message("onchange fired");
+						this.disabled(true);
+						this.readonly(true);
 					},
-					this.disabled = ko.computed(function(){
-							return this.value() == 1;
-					},this);
-					this.readonly = ko.observable(false);
+					disabled : ko.observable(false),
+					readonly : ko.observable(false)
 				};
-					
-			$(function(){
 				
-				ko.applyBindings(new viewModel()); 
+				
+			$(function(){
+				ko.applyBindings(viewModel);
+				
 			});
 		</script>
 	</head>
 
 	<body>
 		<div>
-			<label>标签</label>
-			<select id="cc" style="width:200px;"
-				        data-bind="combotree:value,loadData:data,readonly:false,editable:true">
-				</select>
+			<label>textbox1</label>
+			<input type="text" class="easyui-datebox" data-bind="datebox:value,
+													 			prompt:'Enter a value...',
+													 			multiline:false,
+													            value:value,
+													            onChange:onchange,
+													            novalidate:true,
+													            readonly:readonly"/>
 			<br/>										           
-			<label>标签</label>			
-			<input type="text"  data-options="prompt:'Enter a email value...',
+			<label>textbox2</label>			
+			<input type="text" class="easyui-datebox" data-options="prompt:'Enter a email value...',
 																	multiline:false" 
-													 data-bind="textbox:value,
+													 data-bind="datebox:value,
 													            value:value,
 													            novalidate:true,
 													            disabled:disabled"/>		
 		   <br />
-		   <a  data-bind="linkbutton:null,click:click">动态赋值</a>
+		   <span data-bind="text:message"></span>
 		</div>
 	</body>
 </html>

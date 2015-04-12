@@ -55,7 +55,7 @@
         };
         
         //扩展options和allBindings
-        this.extendOptions = function(isInit){
+        this.extendOptions = function(){
         	var self = this;
             var allBindings = this.allBindings();
             for(property in allBindings){
@@ -74,7 +74,7 @@
                        this.options[property] = allBindings[property];
                        
                        //如果是方法，则使用闭包切换this对象，并赋值
-                    }else if( typeof(allBindings[property]) == "function" && isInit){
+                    }else if( typeof(allBindings[property]) == "function"){
                             var fun = (function(property){
                                 return  function(arguments)
                                 {                                          
@@ -111,19 +111,45 @@
         
         //绑定通用默认事件
         this.bindDefaultEvents = function() {
-        	var self = this;
-        	
-        	if(this.options["onChange"] && self.valueAccessor){
-        		var fun = this.options["onChange"];
-        		this.options["onChange"] = function(newValue){
-        			self.valueAccessor(newValue);
-        			fun(newValue);
-        		};
-        	}else if(!this.options["onChange"] && self.valueAccessor){
-        		this.options["onChange"] = function(newValue){
-        			self.valueAccessor(newValue);
-        		};
+        	var self = this;        	
+        	var fun = null;
+           
+        	//保存外部设置的事件回调
+        	if(this.options["onChange"]){
+        	    fun = this.options["onChange"];
         	}
+        	
+        	if(self.valueAccessor && fun){
+        	    this.options["onChange"] = function(newValue){
+                    self.valueAccessor(newValue);
+                    fun(newValue);
+                };
+        	}else if(self.valueAccessor){
+        	    this.options["onChange"] = function(newValue){
+                    self.valueAccessor(newValue);
+                };
+        	}else if(fun)
+        	{
+        	     this.options["onChange"] = function(newValue){
+                    fun(newValue);
+                };
+        	}
+        	
+        	// if(!this.options["onChange"] && fun){
+//         	    
+        	// }
+//         	
+        	// if(this.options["onChange"] && self.valueAccessor){
+        		// var fun = this.options["onChange"];
+        		// this.options["onChange"] = function(newValue){
+        			// self.valueAccessor(newValue);
+        			// fun(newValue);
+        		// };
+        	// }else if(!this.options["onChange"] && self.valueAccessor){
+        		// this.options["onChange"] = function(newValue){
+        			// self.valueAccessor(newValue);
+        		// };
+        	// }
         };
         
         //绑定用户扩展的事件
@@ -219,9 +245,9 @@
 			}
         };
 		
-		this.init = function(){			
+		this.init = function(){			               		
 			this.getOptions();
-			this.extendOptions(true);
+			this.extendOptions();
 			this.bindDefaultEvents();
 			this.bindPluginInit();
 			
@@ -234,7 +260,7 @@
 			
 			//刷新控件
 			this.getOptions();
-			this.extendOptions(false);
+			this.extendOptions();
 			this.bindDefaultEvents();
 			//处理绑定的扩展操作
 			this.bindPluginUpdate();

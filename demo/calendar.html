@@ -13,13 +13,11 @@
 		
 		<script type="text/javascript">
 			var viewModel ={
-					value : ko.observable("hello"),
+					current : ko.observable(new Date()),
 					message : ko.observable(""),				
 					onchange : function(newValue)
 					{
-						this.message("onchange fired");
-						this.disabled(true);
-						this.readonly(true);
+						this.message(newValue.toLocaleDateString());					
 					},
 					disabled : ko.observable(false),
 					readonly : ko.observable(false)
@@ -35,23 +33,13 @@
 
 	<body>
 		<div>
-			<label>textbox1</label>
-			<input type="text" class="easyui-textbox" data-bind="textbox:value,
-													 			prompt:'Enter a value...',
-													 			multiline:false,
-													            value:value,
-													            onChange:onchange,
-													            novalidate:true,
-													            readonly:readonly"/>
+			
+			<div  type="text" class="easyui-calendar" data-bind="calendar:null,
+																current:current,
+																onChange:onchange
+													 			"></div>
 			<br/>										           
-			<label>textbox2</label>			
-			<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email value...',
-																	multiline:false" 
-													 data-bind="textbox:value,
-													            value:value,
-													            novalidate:true,
-													            disabled:disabled"/>		
-		   <br />
+			
 		   <span data-bind="text:message"></span>
 		</div>
 	</body>

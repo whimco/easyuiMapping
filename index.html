@@ -20,69 +20,200 @@
 		<link rel="stylesheet" type="text/css" href="scripts/themes/icon.css">
 		<script type="text/javascript" src="scripts/jquery.min.js"></script>
 		<script type="text/javascript" src="scripts/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="scripts/knockout/knockout-3.1.0.js"></script>
-		<script type="text/javascript" src="komapping/easyuimapping.js"></script>
-		
+		<style>
+			
+			.e-link{
+				 text-decoration: none;
+				 color: #126499;
+				 font-size: 14px;
+			}
+			.frame{
+				border:none;
+				width:100%;
+				height:100%;
+				overflow:auto;
+			}
+			.easyui-tabs .panel-body{overflow:hidden;}
+		</style>
 		<script type="text/javascript">
-			var viewModel =function() {
-					this.value  = ko.observable("123");
-					this.name = ko.observable("123");
-					this.click = function()
-					{
-						 
-						 this.name("this.value()");
-						 this.visible(true);
-						 //this.value("heloo");
-					};
-					
-					this.click1 = function()
-					{
-						 
-						 this.name("this.value()");
-						 //this.collapse(true);
-						 this.resize({left:0,top:0});
-						 //this.value("heloo");
-					};
-					this.collapse = ko.observable(false);
-					this.resize = ko.observable({left:400,top:600});
-					this.visible = ko.observable(false);
-					this.readonly = ko.observable(false);
-					this.showMenu = ko.observable(false);
-				};
-				
-				var model = new viewModel();
-			$(function(){
-				ko.applyBindings(model); 
-			});
+			function open1(plugin){
+				if ($('#tt').tabs('exists',plugin)){
+					$('#tt').tabs('select', plugin);
+				} else {
+					$('#tt').tabs('add',{
+						title:plugin,
+						content: "<iframe class='frame' src='demo/" + plugin+ ".html'><iframe>",
+						
+						closable:true,
+						extractor:function(data){
+							data = $.fn.panel.defaults.extractor(data);
+							var tmp = $('<div></div>').html(data);
+							data = tmp.find('#content').html();
+							tmp.remove();
+							return data;
+						}
+					});
+				}
+			}
 		</script>
 	</head>
 
-	<body oncontextmenu="showMenu(true); return true;">"
-		<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email address...',multiline:true" data-bind="textbox:value,disabled:readonly,value:value,novalidate:true"/>	<br />
-		<span data-bind="text:name"></span><br />
-		<span data-bind="text:value"></span>
-		<br  />
-		
-		
-		<div  class="easyui-menu" style="width:120px;"  data-bind="menu:null,show:showMenu">
-			    <div>New</div>
-			    <div>
-			        <span>Open</span>
-			        <div style="width:150px;">
-			            <div><b>Word</b></div>
-			            <div data-bind="click:click1">Excel</div>
-			            <div>PowerPoint</div>
-			        </div>
-			    </div>
-			    <div data-options="iconCls:'icon-save'">Save</div>
-			    <div class="menu-sep"></div>
-			    <div>Exit</div>
-			</div>
-		
-		<div id="w" class="easyui-dialog" title="Basic Window" data-options="iconCls:'icon-save',collapsible:true,maximizable:true" data-bind="dialog:null,move:resize,fit:collapse,buttons:[{text:name(),handler:function() { click.call($data)} }],closed:visible" style="width:500px;height:200px;padding:10px;">
-			<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email address...',multiline:true" data-bind="textbox:value,disabled:readonly,value:value,novalidate:true"/>	<br />
+	<body class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'north'" style="height:80px;">
+			<h1>easyui-knockout操作</h1>
 		</div>
 
-		
-		<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email address...'" data-bind="textbox:value,readonly:readonly,value:value,novalidate:true"/>	<br />
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" data-bind="linkbutton:null,click:click1">easyui</a>
+		<div data-options="region:'west',title:'分类',split:true" style="width:200px;">
+			<ul class="easyui-tree">
+				<li iconCls="icon-base">
+					<span>Base</span>
+					<ul>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('pagination')">pagination</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('searchbox')">searchbox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('progressbar')">progressbar</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('tooltip')">tooltip</a>
+						</li>
+						
+					</ul>
+				</li>
+				<li iconCls="icon-layout">
+					<span>Layout</span>
+					<ul>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('panel')">panel</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('tabs')">tabs</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('accordion')">accordion</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('layout')">layout</a>
+						</li>
+					</ul>
+				</li>
+				<li iconCls="icon-menu">
+					<span>Menu and Button</span>
+					<ul>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('menu')">menu</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('linkbutton')">linkbutton</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('menubutton')">menubutton</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('splitbutton')">splitbutton</a>
+						</li>
+					</ul>
+				</li>
+				<li iconCls="icon-form">
+					<span>Form</span>
+					<ul>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('form')">form</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('validatebox')">validatebox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('textbox')">textbox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('combo')">combo</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('combobox')">combobox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('combotree')">combotree</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('combogrid')">combogrid</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('numberbox')">numberbox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('datebox')">datebox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('datetimebox')">datetimebox</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('datetimespinner')">datetimespinner</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('calendar')">calendar</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('spinner')">spinner</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('numberspinner')">numberspinner</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('timespinner')">timespinner</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('slider')">slider</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('filebox')">filebox</a>
+						</li>
+					</ul>
+				</li>
+				<li iconCls="icon-window">
+					<span>Window</span>
+					<ul>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('window')">window</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('dialog')">dialog</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('messager')">messager</a>
+						</li>
+					</ul>
+				</li>
+				<li iconCls="icon-datagrid">
+					<span>DataGrid and Tree</span>
+					<ul>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('datagrid')">datagrid</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('datalist')">datalist</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('propertygrid')">propertygrid</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('tree')">tree</a>
+						</li>
+						<li iconCls="icon-gears">
+							<a class="e-link" href="#" onclick="open1('treegrid')">treegrid</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+		</div>
+		<div data-options="region:'center',title:'示例'" style="padding:5px;background:#eee;">
+			<div id="tt" class="easyui-tabs" fit="true" border="false" plain="true">
+				<div title="welcome" href="demo/welcome.html"></div>
+			</div>
+		</div>
+	</body>
+</html>

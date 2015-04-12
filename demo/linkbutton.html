@@ -15,11 +15,11 @@
 			var viewModel ={
 					value : ko.observable("hello"),
 					message : ko.observable(""),				
-					onchange : function(newValue)
+					click1 : function(newValue)
 					{
-						this.message("onchange fired");
+						arguments[1].toElement.innerHTML = "我被修改了";
+						//this.value("我被修改了");
 						this.disabled(true);
-						this.readonly(true);
 					},
 					disabled : ko.observable(false),
 					readonly : ko.observable(false)
@@ -35,24 +35,8 @@
 
 	<body>
 		<div>
-			<label>textbox1</label>
-			<input type="text" class="easyui-textbox" data-bind="textbox:value,
-													 			prompt:'Enter a value...',
-													 			multiline:false,
-													            value:value,
-													            onChange:onchange,
-													            novalidate:true,
-													            readonly:readonly"/>
-			<br/>										           
-			<label>textbox2</label>			
-			<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email value...',
-																	multiline:false" 
-													 data-bind="textbox:value,
-													            value:value,
-													            novalidate:true,
-													            disabled:disabled"/>		
-		   <br />
-		   <span data-bind="text:message"></span>
+			<a class="easyui-linkbutton" data-bind="linkbutton:null,click:click1">按钮1</a>
+			<a class="easyui-linkbutton" data-bind="linkbutton:null,click:click1,disabled:disabled">修改按钮1</a>
 		</div>
 	</body>
 </html>
