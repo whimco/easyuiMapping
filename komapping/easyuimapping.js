@@ -135,21 +135,6 @@
                 };
         	}
         	
-        	// if(!this.options["onChange"] && fun){
-//         	    
-        	// }
-//         	
-        	// if(this.options["onChange"] && self.valueAccessor){
-        		// var fun = this.options["onChange"];
-        		// this.options["onChange"] = function(newValue){
-        			// self.valueAccessor(newValue);
-        			// fun(newValue);
-        		// };
-        	// }else if(!this.options["onChange"] && self.valueAccessor){
-        		// this.options["onChange"] = function(newValue){
-        			// self.valueAccessor(newValue);
-        		// };
-        	// }
         };
         
         //绑定用户扩展的事件
@@ -240,8 +225,10 @@
         //执行方法
         this.execMethods = function() {
         	var methods = this.getMethods();
-			for(var i=0; i<methods.length; i++){
-				$(this.element)[this.controlType](methods[i].method,methods[i].param);
+			for(var i=0; i<methods.length; i++){				
+				if(methods[i].param){
+					$(this.element)[this.controlType](methods[i].method,methods[i].param);
+				}
 			}
         };
 		

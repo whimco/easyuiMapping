@@ -20,9 +20,11 @@
 						this.message("onchange fired");
 						this.disabled(true);
 						this.readonly(true);
+						this.destroy(true);
 					},
 					disabled : ko.observable(false),
-					readonly : ko.observable(false)
+					readonly : ko.observable(false),
+					destroy:ko.observable(),
 				};
 				
 				
@@ -42,7 +44,8 @@
 													            value:value,
 													            onChange:onchange,
 													            novalidate:true,
-													            readonly:readonly"/>
+													            readonly:readonly,
+													            destroy:destroy"/>
 			<br/>										           
 			<label>textbox2</label>			
 			<input type="text" class="easyui-textbox" data-options="prompt:'Enter a email value...',
